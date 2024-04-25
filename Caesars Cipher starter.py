@@ -67,8 +67,8 @@ class Message(object):
             self.message_text (string, determined by input text)
             self.valid_words (list, determined using helper function load_words
         '''
-        self.message_text = text
         self.valid_words = load_words(WORDLIST_FILENAME)
+        self.message_text = text
 
     ### DO NOT MODIFY THIS METHOD ###
     def get_message_text(self):
