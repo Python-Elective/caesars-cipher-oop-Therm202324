@@ -234,7 +234,7 @@ class CiphertextMessage(Message):
         # Initialize variables to keep track of the best shift and best decrypted message
         best_shift = 0
         max_valid_words = 0
-        decrypted_message = ''
+        decrypt_message = ''
 
         # Try each shift value from 0 to 25
         for shift in range(26):
@@ -251,9 +251,9 @@ class CiphertextMessage(Message):
             if valid_words_count > max_valid_words:
                 max_valid_words = valid_words_count
                 best_shift = 26 - shift
-                decrypted_message = decrypted_text
+                decrypt_message = decrypted_text
 
-        return (best_shift, decrypted_message)
+        return (best_shift, decrypt_message)
 
 if __name__ == '__main__':
     s = get_story_string()
