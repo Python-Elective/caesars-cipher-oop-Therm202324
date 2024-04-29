@@ -69,6 +69,7 @@ class Message(object):
         '''
         self.valid_words = load_words(WORDLIST_FILENAME)
         self.message_text = text
+        
 
     ### DO NOT MODIFY THIS METHOD ###
     def get_message_text(self):
@@ -104,8 +105,8 @@ class Message(object):
                  another letter (string). 
         '''
         shift_dict = {}
-        uppercase_letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-        lowercase_letters = 'abcdefghijklmnopqrstuvwxyz'
+        uppercase_letters = string.ascii_uppercase
+        lowercase_letters = string.ascii_lowercase
 
         shifted_uppercase = uppercase_letters[shift:] + uppercase_letters[:shift]
         shifted_lowercase = lowercase_letters[shift:] + lowercase_letters[:shift]
@@ -129,13 +130,13 @@ class Message(object):
              down the alphabet by the input shift
         '''
         shift_dict = self.build_shift_dict(shift)
-        shifted_message = ''
+        shifted_message = ""
         for char in self.message_text:
-            if char.isalpha():
+            if char in shift_dict:
                 shifted_char = shift_dict[char]
             else:
                 shifted_char = char
-        shifted_message += shifted_char
+            shifted_message += shifted_char
         return shifted_message
 
 class PlaintextMessage(Message):
@@ -156,11 +157,11 @@ class PlaintextMessage(Message):
         Hint: consider using the parent class constructor so less 
         code is repeated
         '''
-        Message.__init__(self, text)
-        
+        super().__init__(text)
         self.shift = shift
         self.encrypting_dict = self.build_shift_dict(shift)
         self.message_text_encrypted = self.apply_shift(shift)
+        
 
     def get_shift(self):
         '''
@@ -236,18 +237,10 @@ class CiphertextMessage(Message):
         max_valid_words = 0
         decrypt_message = ''
 
-        # Try each shift value from 0 to 25
         for shift in range(26):
-            # Apply the current shift to decrypt the message
             decrypted_text = self.apply_shift(26 - shift)
-            
-            # Split the decrypted text into words
             words = decrypted_text.split()
-
-            # Count the number of valid words
             valid_words_count = sum(1 for word in words if is_word(self.valid_words, word))
-
-            # Check if this shift produces more valid words than the current maximum
             if valid_words_count > max_valid_words:
                 max_valid_words = valid_words_count
                 best_shift = 26 - shift
@@ -256,9 +249,9 @@ class CiphertextMessage(Message):
         return (best_shift, decrypt_message)
 
 if __name__ == '__main__':
-    s = get_story_string()
-    ciphertext = CiphertextMessage(s)
-    print(ciphertext.decrypt_message())
+     s = get_story_string()
+     ciphertext = CiphertextMessage(s)
+     print(ciphertext.decrypt_message())
     
     
 # Example test case (PlaintextMessage)
@@ -269,4 +262,4 @@ print('Actual Output:', plaintext.get_message_text_encrypted())
 # Example test case (CiphertextMessage)
 ciphertext = CiphertextMessage('jgnnq, yqtnf!')
 print('Expected Output:', (24, 'hello, world!'))
-print('Actual Output:', ciphertext.decrypt_message())
+print('Actual Output:', ciphertext.decrypt_message()) 
