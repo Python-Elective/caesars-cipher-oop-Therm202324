@@ -240,6 +240,9 @@ class CiphertextMessage(Message):
         for shift in range(26):
             decrypted_text = self.apply_shift(26 - shift)
             words = decrypted_text.split()
+
+           # print(sum([1 for word in words if is_word(self.valid_words, word)]))
+
             valid_words_count = sum(1 for word in words if is_word(self.valid_words, word))
             if valid_words_count > max_valid_words:
                 max_valid_words = valid_words_count
@@ -263,3 +266,7 @@ print('Actual Output:', plaintext.get_message_text_encrypted())
 ciphertext = CiphertextMessage('jgnnq, yqtnf!')
 print('Expected Output:', (24, 'hello, world!'))
 print('Actual Output:', ciphertext.decrypt_message()) 
+
+# test case (PlaintextMessage)
+plaintext = PlaintextMessage('Happy Day', 2)
+print('Actual Output:', plaintext.get_message_text_encrypted())
